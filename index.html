@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  
+  <title>Results summary component</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <main>
+        <div class="main-page">
+            <div class="container">
+                <div class="result_summery_wrap">
+                    <div class="result_summery_box">
+                        <div class="result_box_wrap">
+                            <h3 class="result_title">Your Result</h3>
+                            <div class="result_circle-wrap">
+                                <div class="result_circle-text">
+                                    <h2>76</h2>
+                                    <p>of 100</p>
+                                </div>
+                            </div>
+                            <div class="result_bottom-wrap">
+                                <h2 class="result_bottom_title">Great</h2>
+                                <p class="result_bottom_text">You Scored higher than 65% of the people who have taken these tests.</p>
+                            </div>
+                        </div>
+                        <div class="summary_box_wrap">
+                            <h3 class="summary_title">Summary</h3>
+                            <div id="data-container"></div>
+                            <button class="continue_button" type="button">Continue</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+  
+
+    <script>
+        // Fetch the JSON data
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('data-container');
+
+                // Loop through the data and create HTML elements
+                data.forEach(item => {
+                    const className = item.category === 'Reaction' ? 'reaction' : item.category === 'Memory' ? 'memory' : item.category === 'Verbal' ? 'verbal' : 'visual';
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.classList.add(`${className}`, 'category-wrap');
+                    const categoryscore = document.createElement('div');
+
+                    const icon = document.createElement('img');
+                    icon.src = item.icon;
+                    icon.alt = item.category;
+
+                    const title = document.createElement('h3');
+                    title.textContent = item.category;
+
+                    const score = document.createElement('p');
+                    score.textContent = `${item.score}`;
+                    const scoreTotal = document.createElement('b');
+                    scoreTotal.textContent = `/ 100`;
+
+                    categoryscore.appendChild(score);
+                    categoryscore.appendChild(scoreTotal);
+
+                    categoryDiv.appendChild(icon);
+                    categoryDiv.appendChild(title);
+                    categoryDiv.appendChild(categoryscore);
+                    container.appendChild(categoryDiv);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>``
